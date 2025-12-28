@@ -60,7 +60,7 @@ const Introduction = () => {
 
       {/* 🛠️ METASPLOIT */}
       <motion.img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVSDDp23vLRiMiH2jMQ55xuTUs6EwED3G9hw&s"
+        src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Kali-dragon-icon.svg"
         alt="Metasploit"
         style={{
           x: metaX,
