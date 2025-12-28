@@ -45,7 +45,7 @@ const Hardware = () => {
     },
     {
       name: "ESP32 Boards",
-      img: "https://docs.espressif.com/projects/esp-idf/en/v4.2.4/esp32s2/",
+      img: "https://docs.espressif.com/projects/esp-idf/en/v4.2.4/esp32s2/_images/hw-reference.png",
       description:
         "High-performance ESP32 boards for wireless security and IoT research.",
       features: ["Wi-Fi & Bluetooth", "Low Power", "Educational Projects"],
