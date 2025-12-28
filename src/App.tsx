@@ -1,105 +1,92 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Terminal, ShieldAlert, Cpu, Binary, Target, Globe, Search, X, ChevronRight } from 'lucide-react';
-
-// --- 1. DISCOUNT POPUP ---
-const DiscountModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setIsOpen(true), 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
+// --- 4. FLOATING HARDWARE SECTION ---
+const HardwareShowcase = () => {
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
-          <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} className="relative max-w-md w-full bg-[#1A0F24] border border-[#FF5DA2]/50 p-8 rounded-3xl shadow-[0_0_50px_rgba(255,93,162,0.3)]">
-            <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"><X size={24} /></button>
-            <div className="text-center">
-              <span className="text-xs font-bold tracking-[0.3em] text-[#FF7A45] uppercase">Secure Offer</span>
-              <h3 className="text-4xl font-black text-white mt-2 mb-4">25% OFF</h3>
-              <p className="text-[#CFCFD6] mb-8 font-light">Limited time discount on all advanced cybersecurity certifications.</p>
-              <button className="w-full py-4 rounded-xl bg-gradient-to-r from-[#FF7A45] to-[#E84AA5] text-white font-bold hover:shadow-[0_0_20px_rgba(232,74,165,0.4)] transition-all">Claim Access</button>
+    <section className="py-32 relative overflow-hidden bg-[#120A1A]">
+      <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
+        
+        {/* Left: Text Content */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="lg:w-1/2 space-y-6"
+        >
+          <div className="h-1 w-12 bg-gradient-to-r from-[#FF7A45] to-[#E84AA5]" />
+          <h2 className="text-5xl font-black text-white leading-tight">
+            Tactical <br /> <span className="text-[#7B4DFF]">Hardware Labs</span>
+          </h2>
+          <p className="text-[#CFCFD6] text-lg font-light leading-relaxed">
+            We bridge the gap between software and silicon. Our custom kits feature 
+            <span className="text-white font-medium"> Raspberry Pi 5 clusters</span> and 
+            <span className="text-white font-medium"> ESP32 development boards</span> for real-world hardware hacking and IoT security.
+          </p>
+          <div className="grid grid-cols-2 gap-4 pt-4">
+            <div className="p-4 rounded-2xl bg-[#1A0F24] border border-white/5 flex items-center gap-3 group hover:border-[#FF5DA2]/50 transition-all">
+              <Cpu className="text-[#FF7A45]" size={20} />
+              <span className="text-xs font-bold uppercase tracking-widest">IoT Node</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-[#1A0F24] border border-white/5 flex items-center gap-3 group hover:border-[#FF5DA2]/50 transition-all">
+              <Binary className="text-[#E84AA5]" size={20} />
+              <span className="text-xs font-bold uppercase tracking-widest">ARM Exploits</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Right: Immersive Floating Image */}
+        <div className="lg:w-1/2 relative">
+          <motion.div 
+            animate={{ y: [0, -20, 0], rotate: [0, 2, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="relative z-10 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000" 
+              alt="Hardware Lab" 
+              className="grayscale hover:grayscale-0 transition-all duration-1000 contrast-125"
+            />
+            {/* Glass Overlay Label */}
+            <div className="absolute bottom-6 left-6 p-4 backdrop-blur-xl bg-black/40 border border-white/10 rounded-2xl">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#FF5DA2] font-black">Secure Hardware v2.0</p>
             </div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
-// --- 2. HERO WITH RED LIGHTING ---
-const Hero = () => {
-  return (
-    <section className="relative h-screen flex items-center justify-center bg-[#120A1A] overflow-hidden">
-      <div className="absolute inset-0">
-        <motion.div animate={{ opacity: [0.1, 0.3, 0.1], scale: [1, 1.2, 1] }} transition={{ duration: 5, repeat: Infinity }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/20 blur-[120px] rounded-full" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
-      </div>
-      <div className="relative z-10 text-center px-6">
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-6xl md:text-9xl font-black text-white tracking-tighter leading-none">
-          TDCS <br /><span className="bg-gradient-to-r from-[#FF7A45] via-[#E84AA5] to-[#7B4DFF] bg-clip-text text-transparent italic">TECH</span>
-        </motion.h1>
-        <p className="mt-6 text-[#CFCFD6] text-lg tracking-[0.3em] uppercase font-light">Cybersecurity & Tactical Systems</p>
+          {/* Decorative Glow */}
+          <div className="absolute -inset-10 bg-[#7B4DFF]/20 blur-[100px] rounded-full z-0" />
+        </div>
       </div>
     </section>
   );
 };
 
-// --- 3. 3D COURSE CARD COMPONENT ---
-const CourseCard = ({ title, icon, desc, id }: any) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(useSpring(y), [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(useSpring(x), [-0.5, 0.5], ["-15deg", "15deg"]);
+// --- 5. PROFESSIONAL SERVICES GRID ---
+const ServicesGrid = () => {
+  const services = [
+    { title: "Web Security", icon: <Globe size={40}/>, desc: "End-to-end protection for cloud infrastructures." },
+    { title: "Penetration Testing", icon: <Search size={40}/>, desc: "Simulated attacks to find and fix vulnerabilities." },
+    { title: "Web Development", icon: <Code size={40}/>, desc: "Building secure, high-performance digital products." }
+  ];
 
   return (
-    <motion.div 
-      onMouseMove={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        x.set(e.clientX / rect.width - rect.left / rect.width - 0.5);
-        y.set(e.clientY / rect.height - rect.top / rect.height - 0.5);
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0); }}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className="relative p-8 rounded-3xl bg-[#1A0F24] border border-white/10 group cursor-pointer hover:border-[#FF5DA2]/50 transition-colors"
-    >
-      <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
-        <div className="text-[#FF7A45] mb-6">{icon}</div>
-        <h3 className="text-2xl font-bold text-white mb-4">{title}</h3>
-        <p className="text-[#CFCFD6] text-sm font-light leading-relaxed">{desc}</p>
+    <section className="py-24 bg-[#1A0F24]/50">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10 rounded-[2.5rem] overflow-hidden">
+          {services.map((s, i) => (
+            <div key={i} className="group p-12 bg-[#120A1A] hover:bg-[#1A0F24] border-r border-white/10 last:border-r-0 transition-all duration-500 relative">
+              {/* Scan-line animation */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#FF5DA2] to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-scan" />
+              
+              <div className="text-[#FF7A45] mb-8 group-hover:scale-110 transition-transform duration-500">
+                {s.icon}
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">{s.title}</h3>
+              <p className="text-[#CFCFD6] font-light text-sm leading-relaxed">{s.desc}</p>
+              
+              <button className="mt-10 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#7B4DFF] group-hover:text-[#FF5DA2] transition-colors">
+                Initialize Protocol <ChevronRight size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="absolute bottom-4 right-6 text-white/5 text-6xl font-black italic">0{id}</div>
-    </motion.div>
+    </section>
   );
 };
-
-// --- MAIN APP ---
-export default function App() {
-  return (
-    <div className="bg-[#120A1A] text-white selection:bg-[#FF5DA2]">
-      <DiscountModal />
-      <Hero />
-      
-      {/* Course Section */}
-      <section className="py-32 container mx-auto px-6">
-        <h2 className="text-center text-4xl font-black mb-20 tracking-tight">ELITE <span className="text-[#7B4DFF]">PROGRAMS</span></h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <CourseCard id={1} title="Ethical Hacking" icon={<Terminal size={32}/>} desc="Live exploit simulations and defense tactics." />
-          <CourseCard id={2} title="Pen-Testing" icon={<Target size={32}/>} desc="Advanced infrastructure vulnerability auditing." />
-          <CourseCard id={3} title="Net Defense" icon={<ShieldAlert size={32}/>} desc="Protecting critical enterprise architectures." />
-          <CourseCard id={4} title="IoT Security" icon={<Binary size={32}/>} desc="Hardening ESP32 and ARM-based devices." />
-        </div>
-      </section>
-
-      {/* Minimal Footer */}
-      <footer className="py-10 border-t border-white/5 text-center">
-        <p className="text-[#CFCFD6]/40 text-xs tracking-widest uppercase">
-          © {new Date().getFullYear()} TDCS Technologies Private Limited
-        </p>
-      </footer>
-    </div>
-  );
-}
