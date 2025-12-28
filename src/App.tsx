@@ -9,9 +9,16 @@ import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
+// 👉 ADD THIS
+import LiquidCursor from './LiquidCursor';
+
 function App() {
   return (
-    <div className="min-h-screen bg-dark-secondary">
+    <div className="min-h-screen bg-dark-secondary relative overflow-hidden">
+      
+      {/* 🌊 Liquid Cursor (global) */}
+      <LiquidCursor />
+
       <Header />
       <PromoPopup />
       <Hero />
