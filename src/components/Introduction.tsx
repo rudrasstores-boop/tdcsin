@@ -9,7 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { useRef, useEffect } from "react";
 
 const Introduction = () => {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -22,10 +22,13 @@ const Introduction = () => {
     offset: ["start end", "end start"],
   });
 
+  // Kali / Metasploit
   const metaX = useTransform(scrollYProgress, [0, 1], [0, -350]);
   const metaRotate = useTransform(scrollYProgress, [0, 1], [0, -20]);
   const metaOpacity = useTransform(scrollYProgress, [0.6, 1], [1, 0]);
 
+  // Wireshark (UPDATED – X + Y)
+  const wireX = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const wireY = useTransform(scrollYProgress, [0, 1], [0, -280]);
   const wireRotate = useTransform(scrollYProgress, [0, 1], [0, 15]);
   const wireOpacity = useTransform(scrollYProgress, [0.6, 1], [1, 0]);
@@ -42,9 +45,10 @@ const Introduction = () => {
       mouseX.set((e.clientX - window.innerWidth / 2) / 40);
       mouseY.set((e.clientY - window.innerHeight / 2) / 40);
     };
+
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <section
@@ -55,13 +59,13 @@ const Introduction = () => {
       <motion.div
         className="absolute -top-40 right-0 w-[500px] h-[500px] bg-purple-accent/20 rounded-full blur-[120px]"
         animate={{ scale: [1, 1.15, 1] }}
-        transition={{ duration: 10, repeat: Infinity }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* 🛠️ METASPLOIT */}
+      {/* 🐉 KALI / METASPLOIT */}
       <motion.img
         src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Kali-dragon-icon.svg"
-        alt="Metasploit"
+        alt="Kali Linux / Metasploit"
         style={{
           x: metaX,
           rotate: metaRotate,
@@ -69,7 +73,7 @@ const Introduction = () => {
           translateX: smoothX,
           translateY: smoothY,
         }}
-        className="absolute left-8 top-24 w-36 opacity-30"
+        className="absolute left-8 top-24 w-36 opacity-30 pointer-events-none"
       />
 
       {/* 🦈 WIRESHARK */}
@@ -77,13 +81,14 @@ const Introduction = () => {
         src="https://voiptrainers.com/wp-content/uploads/2024/09/Wireshark.webp"
         alt="Wireshark"
         style={{
+          x: wireX,
           y: wireY,
           rotate: wireRotate,
           opacity: wireOpacity,
           translateX: smoothX,
           translateY: smoothY,
         }}
-        className="absolute right-10 top-32 w-32 opacity-30"
+        className="absolute right-10 top-32 w-32 opacity-30 pointer-events-none"
       />
 
       {/* CONTENT */}
