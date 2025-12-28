@@ -1,14 +1,54 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useRef } from 'react';
 
 const Introduction = () => {
+  const sectionRef = useRef(null);
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   });
 
+  // 🔥 Track scroll only for this section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // 🔥 Scroll-linked movements
+  const kaliY = useTransform(scrollYProgress, [0, 1], [0, -250]);
+  const wireX = useTransform(scrollYProgress, [0, 1], [0, 300]);
+  const metaY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+
   return (
-    <section className="py-24 bg-gradient-to-b from-dark-secondary to-dark-primary relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="py-24 bg-gradient-to-b from-dark-secondary to-dark-primary relative overflow-hidden"
+    >
+      {/* 🔥 SCROLL-ESCAPING LOGOS */}
+      <motion.img
+        src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Kali-dragon-icon.svg"
+        alt="Kali Linux"
+        style={{ y: kaliY }}
+        className="absolute left-10 top-32 w-20 opacity-20"
+      />
+
+      <motion.img
+        src="https://upload.wikimedia.org/wikipedia/commons/d/df/Wireshark_icon.svg"
+        alt="Wireshark"
+        style={{ x: wireX }}
+        className="absolute right-10 top-60 w-16 opacity-20"
+      />
+
+      <motion.img
+        src="https://upload.wikimedia.org/wikipedia/commons/8/87/Metasploit_logo.svg"
+        alt="Metasploit"
+        style={{ y: metaY }}
+        className="absolute left-1/2 top-10 w-24 opacity-15"
+      />
+
+      {/* Background glow */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 right-0 w-96 h-96 bg-purple-accent/20 rounded-full blur-3xl"></div>
       </div>
@@ -24,11 +64,13 @@ const Introduction = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
             Welcome to TDCS Technologies
           </h2>
+
           <p className="text-lg md:text-xl text-text-grey leading-relaxed mb-8">
             TDCS Technologies Private Limited is your trusted partner in cybersecurity excellence.
             We specialize in comprehensive training programs, cutting-edge hardware solutions,
             and professional IT services designed to empower individuals and organizations in the digital age.
           </p>
+
           <p className="text-lg md:text-xl text-text-grey leading-relaxed">
             With industry-recognized certifications, hands-on practical training, and expert mentorship,
             we prepare you for real-world challenges in ethical hacking, penetration testing, and cybersecurity defense.
