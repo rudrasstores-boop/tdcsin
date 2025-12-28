@@ -1,99 +1,139 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { useRef } from 'react';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useRef, useEffect } from "react";
 
 const Introduction = () => {
   const sectionRef = useRef(null);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.2,
+    threshold: 0.25,
   });
 
-  // 🔥 Track scroll only for this section
+  /* ---------------- SCROLL PARALLAX ---------------- */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
 
-  // 🔥 Scroll-linked movements
-  const kaliY = useTransform(scrollYProgress, [0, 1], [0, -250]);
-  const wireX = useTransform(scrollYProgress, [0, 1], [0, 300]);
-  const metaY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const metaX = useTransform(scrollYProgress, [0, 1], [0, -350]);
+  const metaRotate = useTransform(scrollYProgress, [0, 1], [0, -20]);
+  const metaOpacity = useTransform(scrollYProgress, [0.6, 1], [1, 0]);
+
+  const wireY = useTransform(scrollYProgress, [0, 1], [0, -280]);
+  const wireRotate = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  const wireOpacity = useTransform(scrollYProgress, [0.6, 1], [1, 0]);
+
+  /* ---------------- MOUSE PARALLAX ---------------- */
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      mouseX.set((e.clientX - window.innerWidth / 2) / 40);
+      mouseY.set((e.clientY - window.innerHeight / 2) / 40);
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-gradient-to-b from-dark-secondary to-dark-primary relative overflow-hidden"
+      className="py-28 bg-gradient-to-b from-dark-secondary to-dark-primary relative overflow-hidden"
     >
-      {/* 🔥 SCROLL-ESCAPING LOGOS */}
-      <motion.img
-        src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Kali-dragon-icon.svg"
-        alt="Kali Linux"
-        style={{ y: kaliY }}
-        className="absolute left-10 top-32 w-20 opacity-20"
+      {/* 🌌 Animated Glow */}
+      <motion.div
+        className="absolute -top-40 right-0 w-[500px] h-[500px] bg-purple-accent/20 rounded-full blur-[120px]"
+        animate={{ scale: [1, 1.15, 1] }}
+        transition={{ duration: 10, repeat: Infinity }}
       />
 
+      {/* 🛠️ METASPLOIT */}
       <motion.img
-        src="https://upload.wikimedia.org/wikipedia/commons/d/df/Wireshark_icon.svg"
-        alt="Wireshark"
-        style={{ x: wireX }}
-        className="absolute right-10 top-60 w-16 opacity-20"
-      />
-
-      <motion.img
-        src="https://upload.wikimedia.org/wikipedia/commons/8/87/Metasploit_logo.svg"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVSDDp23vLRiMiH2jMQ55xuTUs6EwED3G9hw&s"
         alt="Metasploit"
-        style={{ y: metaY }}
-        className="absolute left-1/2 top-10 w-24 opacity-15"
+        style={{
+          x: metaX,
+          rotate: metaRotate,
+          opacity: metaOpacity,
+          translateX: smoothX,
+          translateY: smoothY,
+        }}
+        className="absolute left-8 top-24 w-36 opacity-30"
       />
 
-      {/* Background glow */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-accent/20 rounded-full blur-3xl"></div>
-      </div>
+      {/* 🦈 WIRESHARK */}
+      <motion.img
+        src="https://voiptrainers.com/wp-content/uploads/2024/09/Wireshark.webp"
+        alt="Wireshark"
+        style={{
+          y: wireY,
+          rotate: wireRotate,
+          opacity: wireOpacity,
+          translateX: smoothX,
+          translateY: smoothY,
+        }}
+        className="absolute right-10 top-32 w-32 opacity-30"
+      />
 
+      {/* CONTENT */}
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 70 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">
             Welcome to TDCS Technologies
           </h2>
 
           <p className="text-lg md:text-xl text-text-grey leading-relaxed mb-8">
-            TDCS Technologies Private Limited is your trusted partner in cybersecurity excellence.
-            We specialize in comprehensive training programs, cutting-edge hardware solutions,
-            and professional IT services designed to empower individuals and organizations in the digital age.
+            TDCS Technologies Private Limited is your trusted partner in cybersecurity excellence,
+            delivering elite training, advanced hardware, and enterprise-grade IT services.
           </p>
 
           <p className="text-lg md:text-xl text-text-grey leading-relaxed">
-            With industry-recognized certifications, hands-on practical training, and expert mentorship,
-            we prepare you for real-world challenges in ethical hacking, penetration testing, and cybersecurity defense.
+            We prepare professionals for real-world ethical hacking, penetration testing,
+            and cyber defense with hands-on, industry-driven learning.
           </p>
         </motion.div>
 
+        {/* STATS */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-5xl mx-auto"
+          initial="hidden"
+          animate={inView ? "show" : "hidden"}
+          variants={{
+            show: { transition: { staggerChildren: 0.2 } },
+          }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 max-w-5xl mx-auto"
         >
           {[
-            { number: '500+', label: 'Students Trained' },
-            { number: '95%', label: 'Success Rate' },
-            { number: '50+', label: 'Industry Partners' },
-          ].map((stat, index) => (
+            { number: "500+", label: "Students Trained" },
+            { number: "95%", label: "Success Rate" },
+            { number: "50+", label: "Industry Partners" },
+          ].map((stat, i) => (
             <motion.div
-              key={index}
-              className="text-center p-6 rounded-xl bg-dark-primary/50 border border-purple-accent/20 hover:border-purple-accent/50 transition-all"
-              whileHover={{ scale: 1.05, y: -5 }}
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0 },
+              }}
+              whileHover={{ scale: 1.07, y: -8 }}
+              className="text-center p-8 rounded-2xl bg-dark-primary/50 border border-purple-accent/20 hover:border-purple-accent/50 transition-all"
             >
-              <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
+              <div className="text-5xl font-bold gradient-text mb-2">
                 {stat.number}
               </div>
               <div className="text-text-grey">{stat.label}</div>
