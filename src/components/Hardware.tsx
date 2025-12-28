@@ -38,7 +38,7 @@ const Hardware = () => {
   const products = [
     {
       name: "Raspberry Pi Kits",
-      img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Raspberry_Pi_Logo.svg",
+      img: "https://www.pikpng.com/pngvi/bboibR_website-article-raspberry-pi-3-icon-clipart/",
       description:
         "Complete Raspberry Pi kits designed for IoT, automation, and cybersecurity labs.",
       features: ["All Models", "Starter Kits", "Accessories Included"],
