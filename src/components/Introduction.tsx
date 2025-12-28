@@ -1,110 +1,97 @@
-import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Terminal, Target, ShieldAlert, Binary } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Cpu, Zap, Radio, Terminal, Search, Globe } from 'lucide-react';
 
-const CourseCard = ({ course }: { course: any }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  // Motion values for mouse position
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Smooth springs to prevent jerky movement
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  // Map mouse movement to rotation degrees
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    // Calculate position from -0.5 to 0.5
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+const HardwareAndServices = () => {
+  const { scrollYProgress } = useScroll();
+  
+  // Parallax offsets for floating elements
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
 
   return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-      className="relative h-[350px] w-full rounded-3xl bg-[#1A0F24] border border-white/10 p-8 cursor-pointer group shadow-2xl transition-colors hover:border-[#FF5DA2]/40"
-    >
-      {/* 3D GLOW EFFECT (The Light that follows mouse) */}
-      <motion.div
-        style={{
-          transform: "translateZ(20px)",
-        }}
-        className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#7B4DFF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-      />
+    <div className="bg-[#120A1A] relative overflow-hidden">
+      
+      {/* --- SECTION 1: HARDWARE (The Orbit) --- */}
+      <section className="py-32 container mx-auto px-6 relative">
+        <div className="flex flex-col lg:flex-row items-center justify-between">
+          
+          {/* Left: Tactical Content */}
+          <div className="lg:w-1/2 z-10 space-y-8">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="inline-block">
+               <span className="text-[#FF7A45] font-mono tracking-tighter text-sm uppercase border-l-2 border-[#FF7A45] pl-4">
+                 Industrial Grade Hardware
+               </span>
+            </motion.div>
+            <h2 className="text-5xl md:text-7xl font-black text-white leading-tight">
+              Tactical <br />
+              <span className="bg-gradient-to-r from-[#FF7A45] to-[#E84AA5] bg-clip-text text-transparent">Lab Kits</span>
+            </h2>
+            <p className="text-[#CFCFD6] text-lg max-w-md font-light">
+              Proprietary TDCS hardware modules designed for deep-level penetration testing, 
+              IoT security research, and ARM-based exploitation.
+            </p>
+          </div>
 
-      <div style={{ transform: "translateZ(75px)" }} className="relative z-10 flex flex-col h-full">
-        {/* ICON - Pops out the most */}
-        <div className="w-16 h-16 rounded-2xl bg-[#120A1A] border border-white/5 flex items-center justify-center text-[#FF7A45] mb-8 shadow-inner group-hover:text-[#FF5DA2] group-hover:border-[#FF5DA2]/50 transition-all duration-500">
-          {React.cloneElement(course.icon, { size: 32 })}
+          {/* Right: Floating Images (The "Mind-Blowing" Part) */}
+          <div className="lg:w-1/2 relative h-[600px] w-full mt-20 lg:mt-0">
+            {/* Main Raspberry Pi Node */}
+            <motion.div style={{ y: y1 }} className="absolute top-0 right-0 w-64 h-64 z-20">
+              <div className="relative p-2 bg-[#1A0F24] border border-white/10 rounded-[2rem] shadow-2xl backdrop-blur-xl group hover:border-[#FF5DA2]/50 transition-all">
+                <img 
+                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=500" 
+                  className="rounded-[1.5rem] grayscale group-hover:grayscale-0 transition-all duration-700" 
+                  alt="Raspberry Pi Lab" 
+                />
+                <div className="absolute -bottom-4 -left-4 bg-[#7B4DFF] p-4 rounded-xl shadow-lg">
+                  <Cpu className="text-white" size={24} />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Secondary ESP32 Chip Node */}
+            <motion.div style={{ y: y2, rotate: -10 }} className="absolute bottom-10 left-10 w-48 h-48 z-10">
+              <div className="relative p-2 bg-[#1A0F24] border border-white/10 rounded-full shadow-2xl overflow-hidden group">
+                 <img 
+                  src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=400" 
+                  className="rounded-full scale-125 grayscale group-hover:grayscale-0 transition-all" 
+                  alt="IoT Hardware" 
+                />
+              </div>
+            </motion.div>
+
+            {/* Connecting Lines (SVG Animation) */}
+            <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none">
+              <motion.circle cx="50%" cy="50%" r="200" fill="none" stroke="#7B4DFF" strokeWidth="1" strokeDasharray="10 10" style={{ rotate }} />
+            </svg>
+          </div>
         </div>
+      </section>
 
-        {/* TEXT CONTENT */}
-        <h3 className="text-2xl font-black text-white mb-4 tracking-tight">
-          {course.title}
-        </h3>
-        
-        <p className="text-[#CFCFD6] text-sm leading-relaxed font-light">
-          {course.desc}
-        </p>
-
-        <div className="mt-auto flex items-center gap-2 text-[#FF7A45] text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
-          Initialize Module <span className="text-lg">→</span>
+      {/* --- SECTION 2: SERVICES (Glass Grid) --- */}
+      <section className="py-24 bg-[#1A0F24]/50 backdrop-blur-3xl">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/5 rounded-3xl overflow-hidden">
+            {[
+              { title: "Web Security", icon: <Globe />, detail: "Advanced SQLi & XSS mitigation." },
+              { title: "Pen-Testing", icon: <Search />, detail: "Full infrastructure vulnerability audit." },
+              { title: "Web Dev", icon: <Terminal />, detail: "Highly secure, performant tech stacks." },
+            ].map((service, i) => (
+              <div key={i} className="group p-12 border-white/5 border-r last:border-r-0 hover:bg-[#7B4DFF]/5 transition-all relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#FF5DA2] to-transparent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700" />
+                <div className="text-[#FF7A45] mb-6 transform group-hover:scale-110 transition-transform">
+                  {React.cloneElement(service.icon, { size: 40 })}
+                </div>
+                <h4 className="text-2xl font-bold text-white mb-4">{service.title}</h4>
+                <p className="text-[#CFCFD6] font-light leading-relaxed">{service.detail}</p>
+                <button className="mt-8 text-xs font-black uppercase tracking-widest text-white/40 group-hover:text-[#FF5DA2] transition-colors">
+                  Analyze Protocol _
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* BACKGROUND DECOR */}
-      <div className="absolute bottom-4 right-4 text-white/5 font-mono text-6xl select-none group-hover:text-[#7B4DFF]/10 transition-colors">
-        0{course.id}
-      </div>
-    </motion.div>
+      </section>
+    </div>
   );
 };
-
-const CourseSection = () => {
-  const courseData = [
-    { id: 1, title: "Ethical Hacking", icon: <Terminal />, desc: "Master offensive security with real-world exploit scenarios." },
-    { id: 2, title: "Penetration Testing", icon: <Target />, desc: "Learn to identify and neutralize vulnerabilities systematically." },
-    { id: 3, title: "Network Defense", icon: <ShieldAlert />, desc: "Architect secure infrastructures against sophisticated threats." },
-    { id: 4, title: "IoT Security", icon: <Binary />, desc: "Deep dive into firmware analysis and device hardening." }
-  ];
-
-  return (
-    <section className="py-32 bg-[#120A1A] perspective-1000">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {courseData.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default CourseSection;
