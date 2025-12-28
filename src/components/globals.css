@@ -1,0 +1,19 @@
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+.glitch {
+  text-shadow:
+    0 0 2px #FF7A45,
+    0 0 3px #E84AA5;
+  animation: flicker 0.2s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { text-shadow: 0 0 2px #FF7A45, 0 0 3px #E84AA5; }
+  50% { text-shadow: 0 0 4px #FF7A45, 0 0 6px #E84AA5; }
+  100% { text-shadow: 0 0 2px #FF7A45, 0 0 3px #E84AA5; }
+}
