@@ -7,12 +7,13 @@ import CyberAttackMap from './components/CyberAttackMap';
 import Hardware from './components/Hardware';
 import Services from './components/Services';
 import Contact from './components/Contact';
-import LiquidCursor from './LiquidCursor';
+import LiquidCursor from './components/LiquidCursor';
 
 function App() {
   return (
     <div className="min-h-screen bg-dark-secondary relative overflow-hidden">
       <LiquidCursor />
+
       <Header />
       <PromoPopup />
       <Hero />
