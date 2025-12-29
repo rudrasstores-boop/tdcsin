@@ -11,20 +11,45 @@ import LiquidCursor from './components/LiquidCursor';
 
 function App() {
   return (
-    <div className="min-h-screen bg-dark-secondary relative overflow-hidden">
+    <div className="bg-dark-secondary text-white min-h-screen">
       <LiquidCursor />
 
-      <Header />
-      <PromoPopup />
-      <Hero />
-      <Introduction />
-      <AlternatingCourses />
-      <CyberAttackMap />
-      <Hardware />
-      <Services />
-      <Contact />
-    </div>
-  );
-}
+      {/* Header */}
+      <header className="sticky top-0 z-50">
+        <Header />
+      </header>
 
-export default App;
+      {/* Promo */}
+      <section className="relative z-40">
+        <PromoPopup />
+      </section>
+
+      {/* Hero */}
+      <main>
+        <section className="min-h-screen flex items-center justify-center px-6">
+          <Hero />
+        </section>
+
+        <section className="py-20 px-6 max-w-7xl mx-auto">
+          <Introduction />
+        </section>
+
+        <section className="py-20 bg-black/30">
+          <AlternatingCourses />
+        </section>
+
+        <section className="py-20 px-6">
+          <CyberAttackMap />
+        </section>
+
+        <section className="py-20 px-6 bg-black/20">
+          <Hardware />
+        </section>
+
+        <section className="py-20 px-6">
+          <Services />
+        </section>
+
+        <section className="py-20 px-6 bg-black/30">
+          <Contact />
+        </section>
