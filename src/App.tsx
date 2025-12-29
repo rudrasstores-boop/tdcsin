@@ -24,7 +24,7 @@ function App() {
         <PromoPopup />
       </section>
 
-      {/* Hero */}
+      {/* Main content */}
       <main>
         <section className="min-h-screen flex items-center justify-center px-6">
           <Hero />
@@ -34,7 +34,7 @@ function App() {
           <Introduction />
         </section>
 
-        <section className="py-20 bg-black/30">
+        <section id="courses" className="py-20 bg-black/30">
           <AlternatingCourses />
         </section>
 
@@ -50,6 +50,12 @@ function App() {
           <Services />
         </section>
 
-        <section className="py-20 px-6 bg-black/30">
+        <section id="contact" className="py-20 px-6 bg-black/30">
           <Contact />
         </section>
+      </main>
+    </div>
+  );
+}
+
+export default App;
