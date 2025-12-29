@@ -13,7 +13,6 @@ function App() {
   return (
     <div className="min-h-screen bg-dark-secondary relative overflow-hidden">
       <LiquidCursor />
-
       <Header />
       <PromoPopup />
       <Hero />
