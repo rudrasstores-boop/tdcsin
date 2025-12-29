@@ -1,49 +1,20 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        /* Core dark theme */
-        "dark-primary": "#0b0f1a",
-        "dark-secondary": "#060913",
-
-        /* Text */
-        "text-grey": "#b3b3b3",
-
-        /* Brand accents */
-        "purple-accent": "#8b5cf6",
-        "neon-pink": "#ec4899",
-      },
-
-      backgroundImage: {
-        "gradient-brand": "linear-gradient(135deg, #8b5cf6, #ec4899)",
-      },
-
-      boxShadow: {
-        "neon-pink": "0 0 25px rgba(236, 72, 153, 0.6)",
-        "purple-glow": "0 0 25px rgba(139, 92, 246, 0.6)",
-      },
-
-      animation: {
-        blink: "blink 1s step-end infinite",
-        float: "float 3s ease-in-out infinite",
-      },
-
-      keyframes: {
-        blink: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-      },
-    },
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
-  plugins: [],
-};
+  "include": ["src"]
+}
